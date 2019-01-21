@@ -9,6 +9,7 @@
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.12",
     "mongose": "^0.0.2-security",
+    "password-hash": "^1.2.2",
     "socket.io": "^2.1.1"
   },
   "devDependencies": {

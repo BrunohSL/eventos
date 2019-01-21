@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const passwordHash = require('password-hash');
 
 module.exports = {
   async index(req, res) {
@@ -6,29 +7,42 @@ module.exports = {
     // O ' - ' antes do parametro é para inverter a ordenação
     const users = await User.find({}).sort("-createdAt");
 
+    // console.log("teste");
+
     return res.json(users);
   },
 
   async store(req, res) {
-    // console.log('Rola');
-    // const teste = await ;
-    // console.log(teste);
 
-    if(User.find({'email':req.body.email})){
-      return res.json("Email já está cadastrado, tente outro e-mail");
+    if(req.body.password !== req.body.passwordConfirmation){
+      return(res.json("A senha deve ser igual a confirmação de senha"));
     }
 
-    const user = await User.create(req.body);
-    //envia um evento para todos que estão conectados na aplicação
-    //esse evento é a criação de um novo event
-    req.io.emit('user', user);
+    const regexObj = new RegExp('.*@.+\..+');
+    let emailValidation = req.body.email.match(regexObj);
 
-    return res.json(user);
+    if(!emailValidation){
+      return res.json("O e-mail não está em um formato válido");
+    }
 
-    // usar salt para o md5 da senha
-    // enviar duas senhas, validar se estão iguais e salvar apenas um valor
-    // validar se já existe e-mail cadastrado - FEITO
-    // validar formato do email antes de salvar
+    const hashPassword = passwordHash.generate(req.body.password);
+    req.body.password = hashPassword;
+
+    User.find({email:req.body.email}, function(err, docs){
+
+      if(docs.length >0){
+        return res.json("Email já está cadastrado, tente outro e-mail");
+      }
+
+      const user = User.create(req.body);
+
+      // envia um evento para todos que estão conectados na aplicação
+      // esse evento é a criação de um novo event
+      req.io.emit('user', user);
+
+      return res.json(user);
+
+    });
   },
 
   // async update(req, res){

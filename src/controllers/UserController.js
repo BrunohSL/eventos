@@ -59,4 +59,8 @@ module.exports = {
 
     return res.json("Usuário excluído com sucesso");
   },
+
+  // async login(req, res){
+
+  // }
 };

@@ -14,6 +14,8 @@ routes.post('/users', UserController.store);
 // routes.post('/users', UserController.update);
 routes.delete('/users/:id', UserController.delete);
 
+routes.post('/teste', UserController.teste);
+
 routes.post('/participate/:id', ParticipateController.participate);
 
 module.exports = routes;

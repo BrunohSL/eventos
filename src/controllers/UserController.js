@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const passwordHash = require('password-hash');
+const bcrypt = require('bcrypt');
 
 module.exports = {
   async index(req, res) {
@@ -25,23 +25,34 @@ module.exports = {
       return res.json("O e-mail não está em um formato válido");
     }
 
-    const hashPassword = passwordHash.generate(req.body.password);
-    req.body.password = hashPassword;
+    bcrypt.hash(req.body.password, 10, function(err, hash) {
+      const hashPassword = hash;
+      req.body.password = hashPassword;
 
-    User.find({email:req.body.email}, function(err, docs){
+      User.find({email:req.body.email}, function(err, docs){
 
-      if(docs.length >0){
-        return res.json("Email já está cadastrado, tente outro e-mail");
-      }
+        if(docs.length >0){
+          return res.json("Email já está cadastrado, tente outro e-mail");
+        }
 
-      const user = User.create(req.body);
+        const user = User.create(req.body);
 
-      // envia um evento para todos que estão conectados na aplicação
-      // esse evento é a criação de um novo event
-      req.io.emit('user', user);
+        // envia um evento para todos que estão conectados na aplicação
+        // esse evento é a criação de um novo event
+        req.io.emit('user', user);
 
-      return res.json(user);
+        return res.json(user);
 
+      });
+    });
+
+  },
+
+  async teste(req, res) {
+    bcrypt.hash(req.body.senha, 10, function(err, hash) {
+      const hashSenha = hash;
+
+      console.log(hashSenha);
     });
   },
 

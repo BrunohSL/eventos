@@ -1,6 +1,6 @@
 // config.js
 module.exports = {
-  'secret': 'supersecret'
+  'secret': 'myegg'
 };
 
 //Disclaimer: Have in mind, under no circumstances should you ever, (EVER!) have your secret key publicly visible like this.

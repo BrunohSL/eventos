@@ -1,5 +1,7 @@
 const User = require('../models/User');
-const passwordHash = require('password-hash');
+const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+const config = require('../../config');
 
 module.exports = {
   async index(req, res) {
@@ -25,23 +27,34 @@ module.exports = {
       return res.json("O e-mail não está em um formato válido");
     }
 
-    const hashPassword = passwordHash.generate(req.body.password);
-    req.body.password = hashPassword;
+    bcrypt.hash(req.body.password, 10, function(err, hash) {
+      const hashPassword = hash;
+      req.body.password = hashPassword;
 
-    User.find({email:req.body.email}, function(err, docs){
+      User.find({email:req.body.email}, function(err, docs){
 
-      if(docs.length >0){
-        return res.json("Email já está cadastrado, tente outro e-mail");
-      }
+        if(docs.length >0){
+          return res.json("Email já está cadastrado, tente outro e-mail");
+        }
 
-      const user = User.create(req.body);
+        const user = User.create(req.body);
 
-      // envia um evento para todos que estão conectados na aplicação
-      // esse evento é a criação de um novo event
-      req.io.emit('user', user);
+        // envia um evento para todos que estão conectados na aplicação
+        // esse evento é a criação de um novo event
+        req.io.emit('user', user);
 
-      return res.json(user);
+        return res.json(user);
 
+      });
+    });
+
+  },
+
+  async teste(req, res) {
+    bcrypt.hash(req.body.senha, 10, function(err, hash) {
+      const hashSenha = hash;
+
+      console.log(hashSenha);
     });
   },
 
@@ -60,7 +73,30 @@ module.exports = {
     return res.json("Usuário excluído com sucesso");
   },
 
-  // async login(req, res){
+  async login(req, res){
+    // console.log(req.headers);
+    User.findOne({email:req.body.email}, function(err, user){
 
-  // }
+      if(!user) {
+        return res.json("You shall not pass");
+      }
+
+      if(user){
+        bcrypt.compare(req.body.password, user.password, function(err, response) {
+
+          if(!response) {
+            return res.json("You shall not pass");
+          }
+
+          if(response) {
+            var token = jwt.sign({ id: user._id, email: user.email }, config.secret, {
+              // expiresIn: 86400 // expires in 24 hours
+              expiresIn: 86400 // expires in 24 hours
+            });
+            return res.json("Utilize o token abaixo para acessar a API: " + token);
+          }
+        })
+      }
+    });
+  },
 };

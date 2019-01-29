@@ -4,14 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^3.0.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.12",
     "mongose": "^0.0.2-security",
-    "password-hash": "^1.2.2",
     "socket.io": "^2.1.1"
   },
   "devDependencies": {

@@ -6,7 +6,7 @@ module.exports = {
     // O ' - ' antes do parametro é para inverter a ordenação
     const events = await Event.find({}).sort("-createdAt");
 
-    return res.json(events);
+    // return res.json(events);
   },
 
   async store(req, res) {
@@ -19,6 +19,6 @@ module.exports = {
     //esse evento é a criação de um novo event
     req.io.emit('event', event);
 
-    return res.json(event);
+    // return res.json(event);
   }
 };

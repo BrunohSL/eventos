@@ -74,25 +74,26 @@ module.exports = {
   },
 
   async login(req, res){
-    // console.log(req.headers);
+    console.log(req.headers);
     User.findOne({email:req.body.email}, function(err, user){
-
+      console.log('sdssddss');
       if(!user) {
         return res.json("You shall not pass");
       }
-
+      console.log('sdaadsdsasdasafsfsafsafsa');
       if(user){
         bcrypt.compare(req.body.password, user.password, function(err, response) {
-
+          console.log('aaaaaaaaa');
           if(!response) {
             return res.json("You shall not pass");
           }
-
+          console.log('bbbbbbbbbb');
           if(response) {
             var token = jwt.sign({ id: user._id, email: user.email }, config.secret, {
               // expiresIn: 86400 // expires in 24 hours
               expiresIn: 86400 // expires in 24 hours
             });
+            console.log('ccccccccc');
             return res.json("Utilize o token abaixo para acessar a API: " + token);
           }
         })

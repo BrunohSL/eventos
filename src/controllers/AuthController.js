@@ -1,37 +1,21 @@
-jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const config = require('../../config');
 
-module.exports = {
+function autentication() {
+  console.log("minha rola");
+}
 
-  async auth(req, res) {
+module.exports.auth = (req, res, next) => {
+  jwt.verify(req.headers.token, config.secret, function(err, decoded) {
 
-    jwt.verify(req.headers.token, config.secret, function(err, decoded) {
-      // console.log(decoded);
+    if (err) {
+      return res.json("false time");
+    }
 
-      if (decoded.email !== req.headers.email) {
-        return res.json("You shall not pass");
-      }
+    if (decoded.email !== req.headers.email) {
+      return res.json("false email");
+    }
 
-      // GERA UM NOVO TIMESTAMP
-      const timestamp = new Date().getTime();
-      // console.log(timestamp);
-      // console.log(decoded.exp);
-      // console.log(timestamp - decoded.exp);
-      // var TimeStamp = timestamp - decoded.exp;
-
-      // CONVERTE TIMESTAMP PARA DATA
-      const teste = new Date(timestamp*1000);
-
-      console.log(teste.toLocaleDateString("pt-BR"));
-      console.log(teste);
-      // console.log(timestamp.toLocaleDateString("pt-BR"));
-      // console.log(timestamp);
-
-      // if (res.status(500)) {
-      //   return ({ auth: false, message: 'Failed to authenticate token.' });
-      // }
-
-      return res.json("true");
-    });
-  },
+    return res.json("True");
+  });
 }

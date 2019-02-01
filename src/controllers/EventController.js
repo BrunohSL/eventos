@@ -10,10 +10,10 @@ module.exports = {
   },
 
   async store(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     const event = await Event.create(req.body);
 
-    console.log(req.body);
+    // console.log(req.body);
 
     //envia um evento para todos que estão conectados na aplicação
     //esse evento é a criação de um novo event

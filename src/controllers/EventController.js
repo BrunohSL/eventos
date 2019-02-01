@@ -10,15 +10,32 @@ module.exports = {
   },
 
   async store(req, res) {
-    // console.log(req.body);
     const event = await Event.create(req.body);
-
-    // console.log(req.body);
 
     //envia um evento para todos que estão conectados na aplicação
     //esse evento é a criação de um novo event
     req.io.emit('event', event);
 
     return res.json(event);
+  },
+
+  async participate(req, res) {
+    const event = await Event.findById(req.params.id);
+
+    event.set({ confirmCont: event.confirmCont +1 });
+
+    await event.save();
+
+    req.io.emit('participate', event);
+
+    return res.json(event);
+  },
+
+  async delete(req, res) {
+    const event = await Event.findById(req.params.id);
+
+    event.delete();
+
+    return res.json("Evento excluído com sucesso");
   }
 };

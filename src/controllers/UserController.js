@@ -50,14 +50,6 @@ module.exports = {
 
   },
 
-  async teste(req, res) {
-    bcrypt.hash(req.body.senha, 10, function(err, hash) {
-      const hashSenha = hash;
-
-      console.log(hashSenha);
-    });
-  },
-
   // async update(req, res){
     //Receber parametros também
     //const user = await User.findById(req.params.id);
@@ -90,7 +82,6 @@ module.exports = {
 
           if(response) {
             var token = jwt.sign({ id: user._id, email: user.email }, config.secret, {
-              // expiresIn: 86400 // expires in 24 hours
               expiresIn: 86400 // expires in 24 hours
             });
             return res.json("Utilize o token abaixo para acessar a API: " + token);

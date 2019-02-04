@@ -10,13 +10,32 @@ module.exports = {
   },
 
   async store(req, res) {
+
+    if (!req.body.category) {
+      return res.json("Você precisa informar uma categoria");
+    }
+
+    if (!req.body.location) {
+      return res.json("Você precisa informar o local do evento");
+    }
+
+    if (!req.body.eventDate) {
+      return res.json("Você precisa informar o local do evento");
+    }
     const event = await Event.create(req.body);
+
+    // console.log(req.body);
 
     //envia um evento para todos que estão conectados na aplicação
     //esse evento é a criação de um novo event
     req.io.emit('event', event);
 
     return res.json(event);
+    // return res.json("true");
+  },
+
+  async update(req, res) {
+
   },
 
   async participate(req, res) {

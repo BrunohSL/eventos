@@ -11,6 +11,10 @@ module.exports = {
 
   async store(req, res) {
 
+    if(!req.body.name) {
+      return res.json("O nome do evento não pode ser vazio");
+    }
+
     if (!req.body.category) {
       return res.json("Você precisa informar uma categoria");
     }
@@ -38,6 +42,10 @@ module.exports = {
     // console.log(req.body);
 
     const event = await Event.findById(req.params.id);
+
+    if(!req.body.name) {
+      return res.json("O nome do evento não pode ser vazio");
+    }
 
     if (!req.body.category) {
       return res.json("Você precisa informar uma categoria");

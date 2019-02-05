@@ -20,7 +20,7 @@ module.exports = {
     }
 
     if (!req.body.eventDate) {
-      return res.json("Você precisa informar o local do evento");
+      return res.json("Você precisa informar a data do evento");
     }
     const event = await Event.create(req.body);
 
@@ -35,7 +35,26 @@ module.exports = {
   },
 
   async update(req, res) {
+    // console.log(req.body);
 
+    const event = await Event.findById(req.params.id);
+
+    if (!req.body.category) {
+      return res.json("Você precisa informar uma categoria");
+    }
+
+    if (!req.body.location) {
+      return res.json("Você precisa informar o local do evento");
+    }
+
+    if (!req.body.eventDate) {
+      return res.json("Você precisa informar a data do evento");
+    }
+
+    event.set(req.body);
+    await event.save();
+
+    return res.json(event);
   },
 
   async participate(req, res) {

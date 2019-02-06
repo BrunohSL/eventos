@@ -16,15 +16,10 @@ module.exports = {
 
   async store(req, res) {
 
-    if(req.body.password !== req.body.passwordConfirmation){
-      return(res.json("A senha deve ser igual a confirmação de senha"));
-    }
+    var message = validation(req);
 
-    const regexObj = new RegExp('.*@.+\..+');
-    let emailValidation = req.body.email.match(regexObj);
-
-    if(!emailValidation){
-      return res.json("O e-mail não está em um formato válido");
+    if (message) {
+      return res.json(message);
     }
 
     bcrypt.hash(req.body.password, 10, function(err, hash) {
@@ -47,7 +42,6 @@ module.exports = {
 
       });
     });
-
   },
 
   // async update(req, res){
@@ -91,3 +85,18 @@ module.exports = {
     });
   },
 };
+
+function validation(req) {
+  // console.log(req.body);
+  // console.log(res);
+  if(req.body.password !== req.body.passwordConfirmation){
+    return "A senha deve ser igual a confirmação de senha";
+  }
+
+  const regexObj = new RegExp('.*@.+\..+');
+  let emailValidation = req.body.email.match(regexObj);
+
+  if(!emailValidation){
+    return "O e-mail não está em um formato válido";
+  }
+}

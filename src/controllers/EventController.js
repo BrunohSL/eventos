@@ -11,26 +11,30 @@ module.exports = {
 
   async store(req, res) {
 
-    validation(req, res);
+    var message = validation(req);
+
+    if (message) {
+      return res.json(message);
+    }
 
     const event = await Event.create(req.body);
-
-    // console.log(req.body);
 
     //envia um evento para todos que estão conectados na aplicação
     //esse evento é a criação de um novo event
     req.io.emit('event', event);
 
     return res.json(event);
-    // return res.json("true");
   },
 
   async update(req, res) {
-    // console.log(req.body);
 
     const event = await Event.findById(req.params.id);
 
-    validation(req, res);
+    var message = validation(req);
+
+    if (message) {
+      return message;
+    }
 
     event.set(req.body);
     await event.save();
@@ -59,20 +63,21 @@ module.exports = {
   }
 };
 
-function validation(req, res) {
+function validation(req) {
+
   if(!req.body.name) {
-    return res.json("O nome do evento não pode ser vazio");
+    return "O nome do evento não pode ser vazio";
   }
 
   if (!req.body.category) {
-    return res.json("Você precisa informar uma categoria");
+    return "Você precisa informar uma categoria";
   }
 
   if (!req.body.location) {
-    return res.json("Você precisa informar o local do evento");
+    return "Você precisa informar o local do evento";
   }
 
   if (!req.body.eventDate) {
-    return res.json("Você precisa informar a data do evento");
+    return "Você precisa informar a data do evento";
   }
 }

@@ -12,7 +12,7 @@ module.exports = {
       if (decoded.email !== req.headers.email) {
         return res.json("You shall not pass");
       }
-
+      console.log("Valid authentication");
       next();
     });
   },

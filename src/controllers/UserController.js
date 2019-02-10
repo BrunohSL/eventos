@@ -36,19 +36,26 @@ module.exports = {
 
         // envia um evento para todos que estão conectados na aplicação
         // esse evento é a criação de um novo event
-        req.io.emit('user', user);
+        // req.io.emit('user', user);
 
-        return res.json(user);
-
+        return res.json("Usuário cadastrado com sucesso");
       });
     });
   },
 
   async update(req, res) {
-    // Receber parametros também
-    // const user = await User.findById(req.params.id);
-    // event.set({ confirmCont: event.confirmCont +1 });
-    // await event.save();
+
+    const user = await User.findById(req.params.id);
+    var message = validation(req);
+
+    if (message) {
+      return res.json(message);
+    }
+
+    user.set(req.body);
+    await user.save();
+
+    return res.json(user);
   },
 
   async delete(req, res) {
@@ -87,8 +94,11 @@ module.exports = {
 };
 
 function validation(req) {
-  // console.log(req.body);
-  // console.log(res);
+
+  if (!req.body.name) {
+    return "O campo nome não pode ser vazio"
+  }
+
   if (req.body.password !== req.body.passwordConfirmation) {
     return "A senha deve ser igual a confirmação de senha";
   }

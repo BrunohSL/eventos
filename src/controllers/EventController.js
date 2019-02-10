@@ -32,7 +32,7 @@ module.exports = {
     var message = validation(req);
 
     if (message) {
-      return message;
+      return res.json(message);
     }
 
     event.set(req.body);
@@ -42,6 +42,7 @@ module.exports = {
   },
 
   async participate(req, res) {
+
     const event = await Event.findById(req.params.id);
 
     event.set({ confirmCont: event.confirmCont +1 });

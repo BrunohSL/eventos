@@ -29,7 +29,6 @@ module.exports = {
   async update(req, res) {
 
     const event = await Event.findById(req.params.id);
-
     var message = validation(req);
 
     if (message) {
@@ -60,12 +59,12 @@ module.exports = {
     event.delete();
 
     return res.json("Evento excluído com sucesso");
-  }
+  },
 };
 
 function validation(req) {
 
-  if(!req.body.name) {
+  if (!req.body.name) {
     return "O nome do evento não pode ser vazio";
   }
 

@@ -3,18 +3,17 @@ const config = require('../../config');
 
 module.exports = {
 
-  async auth(req, res) {
-
+  async auth(req, res, next) {
     jwt.verify(req.headers.token, config.secret, function(err, decoded) {
       if (err) {
-        return res.json("false time");
+        return res.json(err);
       }
 
       if (decoded.email !== req.headers.email) {
-        return res.json("false email");
+        return res.json("You shall not pass");
       }
 
-      return res.json("True");
+      next();
     });
   },
 }

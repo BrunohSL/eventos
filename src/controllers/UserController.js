@@ -26,9 +26,9 @@ module.exports = {
       const hashPassword = hash;
       req.body.password = hashPassword;
 
-      User.find({email:req.body.email}, function(err, docs){
+      User.find({email:req.body.email}, function(err, docs) {
 
-        if(docs.length >0){
+        if(docs.length >0) {
           return res.json("Email já está cadastrado, tente outro e-mail");
         }
 
@@ -44,14 +44,14 @@ module.exports = {
     });
   },
 
-  // async update(req, res){
-    //Receber parametros também
-    //const user = await User.findById(req.params.id);
+  async update(req, res) {
+    // Receber parametros também
+    // const user = await User.findById(req.params.id);
     // event.set({ confirmCont: event.confirmCont +1 });
     // await event.save();
-  // },
+  },
 
-  async delete(req, res){
+  async delete(req, res) {
     const user = await User.findById(req.params.id);
 
     user.delete();
@@ -59,28 +59,28 @@ module.exports = {
     return res.json("Usuário excluído com sucesso");
   },
 
-  async login(req, res){
+  async login(req, res) {
     // console.log(req.headers);
-    User.findOne({email:req.body.email}, function(err, user){
+    User.findOne({email:req.body.email}, function(err, user) {
 
-      if(!user) {
+      if (!user) {
         return res.json("You shall not pass");
       }
 
-      if(user){
+      if (user) {
         bcrypt.compare(req.body.password, user.password, function(err, response) {
 
-          if(!response) {
+          if (!response) {
             return res.json("You shall not pass");
           }
 
-          if(response) {
+          if (response) {
             var token = jwt.sign({ id: user._id, email: user.email }, config.secret, {
               expiresIn: 86400 // expires in 24 hours
             });
             return res.json("Utilize o token abaixo para acessar a API: " + token);
           }
-        })
+        });
       }
     });
   },
@@ -89,14 +89,14 @@ module.exports = {
 function validation(req) {
   // console.log(req.body);
   // console.log(res);
-  if(req.body.password !== req.body.passwordConfirmation){
+  if (req.body.password !== req.body.passwordConfirmation) {
     return "A senha deve ser igual a confirmação de senha";
   }
 
   const regexObj = new RegExp('.*@.+\..+');
   let emailValidation = req.body.email.match(regexObj);
 
-  if(!emailValidation){
+  if (!emailValidation) {
     return "O e-mail não está em um formato válido";
   }
 }

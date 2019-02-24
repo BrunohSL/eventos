@@ -5,4 +5,26 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNDhiYWM4MTRiMWZmNWFiMDg2NjE3YSI
 
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNGY3NmQ5ZDc0YjZkNmQ1MzExMGIxNCIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNTQ4NzExNjkwLCJleHAiOjE1NDg3OTgwOTB9.8amwYNHJo6SbdIFqwyiWLdCw-WWukOuUU8Zk3Ze9Jf0
 
+RegExp:
+.*@.+\..+
+
+teste@gmail.com
+bruno.heinrich@superlogica.com
+teste@teste.com.br
+TESTE@teste.com.br
+TEste@tesTE.CoM.Br
+oi@teste.com.edu.br
+te234s23te24@tes5423te.c0m.b43.o1
+teste
+maisTeste@
+meuEmail.com
+@teste
+
+
+Links:
+
+Validador JWT -> https://jwt.io/#debugger
+Documentação Chai -> https://www.chaijs.com/guide/styles/
+Documentação Mongoose -> https://mongoosejs.com/docs/schematypes.html#arrays
+
 

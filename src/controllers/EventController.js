@@ -18,11 +18,18 @@ module.exports = {
       return res.json(message);
     }
 
-    const event = await Event.create(req.body);
+    var event = req.body;
 
-    //envia um evento para todos que estão conectados na aplicação
-    //esse evento é a criação de um novo event
-    req.io.emit('event', event);
+    User.findOne({email: req.headers.email}, function(err, user) {
+
+      event.createdBy = user.id;
+
+      event = Event.create(req.body);
+
+      //envia um evento para todos que estão conectados na aplicação
+      //esse evento é a criação de um novo event
+      req.io.emit('event', event);
+    });
 
     return res.json(event);
   },

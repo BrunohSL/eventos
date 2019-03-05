@@ -57,7 +57,17 @@ module.exports = {
       return res.json("Não encontrou o evento informado");
     }
 
-    await User.findOne({email: req.headers.email}, function(err, user) {
+    const user = await User.findOne({email: req.headers.email});
+
+    await Event.find({confirmedUsers: user.id}, function(err, eventsList) {
+
+      if (eventsList) {
+        eventsList.forEach(function(eventElement) {
+          if (eventElement.id === req.params.id) {
+            return res.json("Você já está participando deste evento");
+          }
+        });
+      }
 
       event.confirmedUsers.push(user.id);
       event.set({
@@ -68,9 +78,10 @@ module.exports = {
       event.save();
 
       req.io.emit('participate', event);
+      // return res.json(event);
+      return res.json("Se inscreveu com sucesso");
     });
 
-    return res.json(event);
   },
 
   async delete(req, res) {

@@ -5,6 +5,14 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNDhiYWM4MTRiMWZmNWFiMDg2NjE3YSI
 
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNGY3NmQ5ZDc0YjZkNmQ1MzExMGIxNCIsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiaWF0IjoxNTQ4NzExNjkwLCJleHAiOjE1NDg3OTgwOTB9.8amwYNHJo6SbdIFqwyiWLdCw-WWukOuUU8Zk3Ze9Jf0
 
+A test is not a unit test if:
+
+It talks to the database
+It communicates across the network
+It touches the file system
+It can't run at the same time as any of your other unit tests
+You have to do special things to your environment (such as editing config files) to run it.
+
 RegExp:
 .*@.+\..+
 

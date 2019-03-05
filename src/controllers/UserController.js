@@ -85,7 +85,7 @@ module.exports = {
             var token = jwt.sign({ id: user._id, email: user.email }, config.secret, {
               expiresIn: 86400 // expires in 24 hours
             });
-            return res.json("Utilize o token abaixo para acessar a API: " + token);
+            return res.json(token);
           }
         });
       }

@@ -1,4 +1,5 @@
 const Event = require('../models/Event');
+const User = require('../models/User');
 
 module.exports = {
   async index(req, res) {
@@ -45,11 +46,22 @@ module.exports = {
 
     const event = await Event.findById(req.params.id);
 
-    event.set({ confirmCont: event.confirmCont +1 });
+    if (!event) {
+      return res.json("Não encontrou o evento informado");
+    }
 
-    await event.save();
+    await User.findOne({email: req.headers.email}, function(err, user) {
 
-    req.io.emit('participate', event);
+      event.confirmedUsers.push(user.id);
+      event.set({
+        confirmCont: event.confirmCont +1,
+        confirmedUsers: event.confirmedUsers
+      });
+
+      event.save();
+
+      req.io.emit('participate', event);
+    });
 
     return res.json(event);
   },

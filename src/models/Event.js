@@ -1,14 +1,11 @@
 const mongoose = require('mongoose');
-// const User = require('../models/User');
-
-// var Users = new User();
 
 const EventSchema = new mongoose.Schema({
   createdBy: String,
   name: String,
   description: String,
   confirmedUsers: {
-    idUser: String,
+    type: Array,
     default: [],
   },
   confirmCont: {

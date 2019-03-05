@@ -9,8 +9,6 @@ module.exports = {
     // O ' - ' antes do parametro é para inverter a ordenação
     const users = await User.find({}).sort("-createdAt");
 
-    // console.log("teste");
-
     return res.json(users);
   },
 
@@ -67,7 +65,6 @@ module.exports = {
   },
 
   async login(req, res) {
-    // console.log(req.headers);
     User.findOne({email:req.body.email}, function(err, user) {
 
       if (!user) {

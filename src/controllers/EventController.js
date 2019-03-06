@@ -57,27 +57,33 @@ module.exports = {
       return res.json("Não encontrou o evento informado");
     }
 
-    const user = await User.findOne({email: req.headers.email});
+    await User.findOne({email: req.headers.email}, function(err, user) {
 
-    await Event.find({confirmedUsers: user.id}, function(err, eventsList) {
+      Event.find({confirmedUsers: user.id}, function(err, eventsList) {
 
-      if (eventsList) {
-        eventsList.forEach(function(eventElement) {
-          if (eventElement.id === req.params.id) {
+        var participating = false;
+
+        if (eventsList) {
+          eventsList.forEach(function(eventElement) {
+            if (eventElement.id === req.params.id) {
+              participating = true;
+            }
+          });
+          if (participating) {
             return res.json("Você já está participando deste evento");
           }
+        }
+
+        event.confirmedUsers.push(user.id);
+        event.set({
+          confirmCont: event.confirmCont +1,
+          confirmedUsers: event.confirmedUsers
         });
-      }
 
-      event.confirmedUsers.push(user.id);
-      event.set({
-        confirmCont: event.confirmCont +1,
-        confirmedUsers: event.confirmedUsers
+        event.save();
+
+        return res.json("Se inscreveu com sucesso");
       });
-
-      event.save();
-
-      return res.json("Se inscreveu com sucesso");
     });
   },
 

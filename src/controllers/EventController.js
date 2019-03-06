@@ -77,11 +77,8 @@ module.exports = {
 
       event.save();
 
-      req.io.emit('participate', event);
-      // return res.json(event);
       return res.json("Se inscreveu com sucesso");
     });
-
   },
 
   async delete(req, res) {

@@ -15,6 +15,7 @@ routes.post('/events/store', EventController.store);
 routes.post('/events/update/:id', EventController.update);
 routes.delete('/events/:id', EventController.delete);
 routes.post('/events/participate/:id', EventController.participate);
+routes.post('/events/quit/:id', EventController.quitEvent);
 
 routes.get('/users', UserController.index);
 routes.post('/users/store', UserController.store);

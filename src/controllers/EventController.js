@@ -87,6 +87,38 @@ module.exports = {
     });
   },
 
+  async quitEvent(req, res) {
+    const event = await Event.findById(req.params.id);
+    var userId;
+
+    await User.findOne({email: req.headers.email}, function(err, user) {
+        userId = user.id;
+    });
+
+    var find = false;
+    var count = 0;
+    var newList = [];
+    event.confirmedUsers.forEach(user => {
+        if (user != userId) {
+            newList.push(user);
+            count++
+        }
+
+        if (user === userId) {
+            find = true
+        }
+    });
+
+    if (find) {
+        event.set({confirmCont: count});
+        event.set({confirmedUsers: newList});
+        event.save();
+        find = false;
+        return res.json("Cancelou a participação no evento");
+    }
+    return res.json("Não está participando do evento");
+  },
+
   async delete(req, res) {
     const event = await Event.findById(req.params.id);
 

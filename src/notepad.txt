@@ -21,10 +21,9 @@ meuEmail.com
 @teste
 
 
-Links:
+User:   5c59abe3a13ff41dc3a6fe7b
+        5c7ea9a0151c1920fddbd53d
+        5c816c17e909616588cd3542
 
-Validador JWT -> https://jwt.io/#debugger
-Documentação Chai -> https://www.chaijs.com/guide/styles/
-Documentação Mongoose -> https://mongoosejs.com/docs/schematypes.html#arrays
-
-
+Evento: 5c7ee5a683b10244ec35e381
+        5c7ee5a683b10244ec35e381

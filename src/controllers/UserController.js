@@ -43,9 +43,18 @@ module.exports = {
 
   async update(req, res) {
 
+    // Busca um usuário pelo id passado na requisição
     const user = await User.findById(req.params.id);
+
+    // Caso não encontre um usuário retorna a mensagem
+    if (!user) {
+        return res.json("Usuário não encontrado");
+    }
+
+    // Chama a função responsável pela validação dos campos
     var message = validation(req);
 
+    // Caso exista alguma mensagem de erro retorna a mensagem
     if (message) {
       return res.json(message);
     }

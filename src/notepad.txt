@@ -21,9 +21,6 @@ meuEmail.com
 @teste
 
 
-User:   5c59abe3a13ff41dc3a6fe7b
-        5c7ea9a0151c1920fddbd53d
-        5c816c17e909616588cd3542
+Excluir{
 
-Evento: 5c7ee5a683b10244ec35e381
-        5c7ee5a683b10244ec35e381
+}

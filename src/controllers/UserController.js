@@ -132,18 +132,18 @@ module.exports = {
                 // Usa o bcrypt para validar se a senha está correta
                 bcrypt.compare(req.body.password, user.password, function(err, response) {
                     // Se der erro retorna a mensagem de erro
-                    // if(err) {
-                    //     return err.msg;
-                    // }
-
-                    console.log(response);
+                    if(err) {
+                        return err.msg;
+                    }
 
                     // Caso não retorne
                     if (!response) {
                         return res.json("You shall not pass");
                     }
 
+                    // Caso a senha esteja correta
                     if (response) {
+                        // Gera um token que contém o id do usuário e o e-mail do usuário e retorna esse token
                         var token = jwt.sign({ id: user._id, email: user.email }, config.secret, {
                             expiresIn: 86400 // expires in 24 hours
                         });

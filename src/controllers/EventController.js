@@ -2,13 +2,14 @@ const Event = require('../models/Event');
 const User = require('../models/User');
 
 module.exports = {
-  async index(req, res) {
-    // O sort no find ordena por data de criação
-    // O ' - ' antes do parametro é para inverter a ordenação
-    const events = await Event.find({}).sort("-createdAt");
+    async index(req, res) {
+        // Busca no banco por todos os usuários cadastrados
+        // O sort no find ordena por data de criação
+        // O ' - ' antes do parametro é para inverter a ordenação
+        const events = await Event.find({}).sort("-createdAt");
 
-    return res.json(events);
-  },
+        return res.json(events);
+    },
 
   async store(req, res) {
 
@@ -50,41 +51,53 @@ module.exports = {
   },
 
   async participate(req, res) {
-
+    // Busca pelo evendo com id passado por parametro na request
     const event = await Event.findById(req.params.id);
 
+    // Busca pelo usuário com email recebido no header da request
+    const user = await User.findOne({email: req.headers.email});
+
+    var participating = false;
+    var msg = "";
+
+    // Caso não encontre um evento retorna a mensagem
     if (!event) {
       return res.json("Não encontrou o evento informado");
     }
 
-    await User.findOne({email: req.headers.email}, function(err, user) {
-
-      Event.find({confirmedUsers: user.id}, function(err, eventsList) {
-
-        var participating = false;
-
-        if (eventsList) {
-          eventsList.forEach(function(eventElement) {
-            if (eventElement.id === req.params.id) {
-              participating = true;
-            }
-          });
-          if (participating) {
-            return res.json("Você já está participando deste evento");
-          }
+    // Valida se já existe o ID do evento dentro da lista de eventos confirmados do usuário
+    user.confirmedEvents.forEach((confirmedEvent) => {
+        // Se encontrar retorna a mensagem
+        if (confirmedEvent === req.params.id) {
+            participating = true;
+            return msg = "Você já está participando deste evento";
         }
+    });
 
+    // Valida se já existe o ID do usuário dentro da lista de usuários confirmados do evento
+    event.confirmedUsers.forEach((confirmedUser) => {
+        // Se encontrar retorna a mensagem
+        if (confirmedUser === user.id) {
+            participating = true;
+            return msg = "Você já está participando deste evento";
+        }
+    });
+
+    if (msg) {
+        return res.json(msg);
+    }
+
+    if (!participating) {
+        // Adiciona o id do usuário na lista de usuários inscritos no evento e salva no banco de dados
         event.confirmedUsers.push(user.id);
-        event.set({
-          confirmCont: event.confirmCont +1,
-          confirmedUsers: event.confirmedUsers
-        });
-
         event.save();
 
-        return res.json("Se inscreveu com sucesso");
-      });
-    });
+        // Adiciona o id do evento na lista de eventos confirmados do usuário e salva no banco de dados
+        user.confirmedEvents.push(event.id);
+        user.save();
+
+        return res.json("Inscrição concluída");
+    }
   },
 
   async quitEvent(req, res) {

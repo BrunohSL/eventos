@@ -66,6 +66,9 @@ module.exports = {
 
     /**
      * Atualiza as informações de um usuário com os dados recebidos via request
+     *
+     * @todo Criptografar senha quando enviada via update
+     * @todo Caso seja enviado um update de senha, deve conter os campos de senha e confirmação de senha
      */
     async update(req, res) {
         // Busca um usuário pelo id passado na requisição
@@ -156,7 +159,7 @@ module.exports = {
 };
 
 /**
- * Responsável pelas validações das informações que são enviadas na request
+ * Função responsável por validar dados de cadastro e update enviadas via request
  */
 function validation(req) {
 

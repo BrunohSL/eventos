@@ -166,8 +166,10 @@ module.exports = {
     },
 
     async delete(req, res) {
+        // Busca o evento pelo id enviado no request
         const event = await Event.findById(req.params.id);
 
+        // Deleta o evento
         event.delete();
 
         return res.json("Evento excluído com sucesso");

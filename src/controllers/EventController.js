@@ -132,35 +132,37 @@ module.exports = {
      * Função responsável por remover um usuário de um evento
      */
     async quitEvent(req, res) {
+        // Busca pelo evendo com id passado por parametro na request
         const event = await Event.findById(req.params.id);
-        var userId;
 
-        await User.findOne({email: req.headers.email}, function(err, user) {
-            userId = user.id;
-        });
+        // Busca pelo usuário com email recebido no header da request
+        const user = await User.findOne({email: req.headers.email});
 
-        var find = false;
-        var count = 0;
-        var newList = [];
-        event.confirmedUsers.forEach(user => {
-            if (user != userId) {
-                newList.push(user);
-                count++
-            }
-
-            if (user === userId) {
-                find = true
-            }
-        });
-
-        if (find) {
-            event.set({confirmCont: count});
-            event.set({confirmedUsers: newList});
-            event.save();
-            find = false;
-            return res.json("Cancelou a participação no evento");
+        // Caso não encontre um evento retorna a mensagem
+        if (!event) {
+            return res.json("Não encontrou o evento informado");
         }
-        return res.json("Não está participando do evento");
+
+        // Valida se existe o evento na lista do usuário e retorna o index
+        var eventIndex = user.confirmedEvents.indexOf(req.params.id);
+
+        // Valida se existe o evento na lista do usuário e retorna o index
+        var userIndex = event.confirmedUsers.indexOf(user.id);
+
+        // Caso não encontre o usuário/evento na lista de confirmados retorna a mensagem
+        if (userIndex < 0 || eventIndex < 0) {
+            return res.json("Você não está participando do evento");
+        }
+
+        // Remove o evento da lista do usuário e salva no banco
+        user.confirmedEvents.splice(eventIndex, 1);
+        user.save();
+
+        // Remove o usuário da lista do evento e salva no banco
+        event.confirmedUsers.splice(userIndex, 1);
+        event.save();
+
+        return res.json("Inscrição cancelada com sucesso");
     },
 
     async delete(req, res) {

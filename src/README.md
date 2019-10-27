@@ -1,0 +1,21 @@
+# Criando projeto node do zero
+
+#### Criar uma pasta para o projeto
+ * mkdir nome_da_pasta
+
+## De preferência criar duas pastas dentro da pasta do projeto, uma para o backend e uma para o frontent
+ * cd nome_da_pasta
+ * mkdir frontend
+ * mkdir backend
+
+## Abrir a pasta backend e inicializar o node
+ * cd backend
+ * yarn init
+
+## Adicionar o express
+ * yarn add express
+
+## Para melhor organização, criar uma pasta src
+ * mkdir src
+
+## Abrir a pasta src e criar um arquivo index.js

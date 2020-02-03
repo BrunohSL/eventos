@@ -21,20 +21,23 @@ module.exports = {
      * Cadastra um novo usuário no banco de dados
      */
     async store(req, res) {
+        if (!req) {
+            return res.status(500).json("Nada enviado");
+        }
 
         // Chama a função responsável pela validação dos campos
         var message = validation(req);
 
         // Caso exista alguma mensagem de erro retorna a mensagem
         if (message) {
-            return res.json(message);
+            return res.status(500).json(message);
         }
 
         // Trata a senha com o bcrypt (criptografia)
         bcrypt.hash(req.body.password, 10, function(err, hash) {
             // Se der erro retorna a mensagem de erro
             if(err) {
-                return err.msg;
+                return res.status(500).json(err.msg);
             }
 
             // Salva o valor criptografado como senha do usuário
@@ -44,12 +47,12 @@ module.exports = {
             User.find({email:req.body.email}, function(err, docs) {
                 // Se der erro retorna a mensagem de erro
                 if(err) {
-                    return err.msg;
+                    return res.status(500).json(err.msg);
                 }
 
                 // Caso encontre um usuário com mesmo e-mail retorna a mensagem
                 if(docs.length >0) {
-                    return res.json("Email já está cadastrado, tente outro e-mail");
+                    return res.status(500).json("Email já está cadastrado, tente outro e-mail");
                 }
 
                 // Salva o usuário no banco de dados
@@ -59,7 +62,7 @@ module.exports = {
                 // esse evento é a criação de um novo event
                 // req.io.emit('user', user);
 
-                return res.json("Usuário cadastrado com sucesso");
+                return res.status(500).json("Usuário cadastrado com sucesso");
             });
         });
     },

@@ -8,7 +8,7 @@ const UserController = require('./controllers/UserController');
 routes.post('/users/store', UserController.store);
 routes.post('/login', UserController.login);
 
-routes.use(AuthController.auth);
+// routes.use(AuthController.auth);
 
 routes.get('/events', EventController.index);
 routes.post('/events/store', EventController.store);

@@ -12,7 +12,7 @@
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.12",
     "mongose": "^0.0.2-security",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.4.0"
   },
   "devDependencies": {
     "jest": "^24.9.0",

@@ -8,6 +8,7 @@ module.exports = {
      * Retorna a lista de usuários cadastrados
      */
     async index(req, res) {
+        console.log("Passou aqui");
         // Busca no banco por todos os usuários cadastrados
         // O sort no find ordena por data de criação
         // O ' - ' antes do parametro é para inverter a ordenação
@@ -165,7 +166,6 @@ module.exports = {
  * Função responsável por validar dados de cadastro e update enviadas via request
  */
 function validation(req) {
-
     // Caso não envie o nome do usuário
     if (!req.body.name) {
         return "O campo nome não pode ser vazio"
